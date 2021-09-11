@@ -1,0 +1,19 @@
+version: "3"
+services:
+  database:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=ticket
+    ports:
+      - "3306:3306"
+    hostname: database
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - 8081:80
+    external_links:
+      - ticket-management_database_1:mysql

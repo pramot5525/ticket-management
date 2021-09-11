@@ -14,10 +14,39 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Ticket.init({
-    title: DataTypes.STRING,
-    description: DataTypes.STRING,
-    contact_infomation: DataTypes.STRING,
-    status: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: [0, 255],
+          msg: 'Max length 255 characters',
+        },
+      },
+    },
+    description: DataTypes.TEXT,
+    contact_information: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: false,
+        len: {
+          args: [0, 255],
+          msg: 'Max length 255 characters',
+        },
+      },
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['pending', 'accepted', 'resolved', 'rejected']],
+          msg: 'Must be a valid type',
+        },
+      },
+    },
+    order: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Ticket',
