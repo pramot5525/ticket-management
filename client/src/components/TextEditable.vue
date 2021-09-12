@@ -126,6 +126,7 @@ export default {
   }
 }
 .title {
+  font-weight: 600;
   &.active {
     cursor: pointer;
   }
@@ -146,6 +147,10 @@ export default {
   -webkit-line-clamp: 7;
   -webkit-box-orient: vertical;
   line-height: 1.23;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 10px;
 
   span {
     color: #b4b4b4;

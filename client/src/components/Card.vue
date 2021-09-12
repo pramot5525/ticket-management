@@ -3,7 +3,7 @@
     <div>
       <div class="c-header">
         <div class="c-title">
-          {{ title }}
+          <div class="title">{{ title }}</div>
           <b-badge pill :variant="badgeVariant">{{ status }}</b-badge>
         </div>
         <i class="material-icons c-edit">edit</i>
@@ -73,7 +73,7 @@ export default {
   }
 
   .card-body {
-    padding: 1rem;
+    padding: 1.2rem 1rem;
     text-align: left;
 
     .c-header {
@@ -83,15 +83,26 @@ export default {
       .c-title {
         display: flex;
         align-items: center;
-        text-transform: capitalize;
+        // text-transform: capitalize;
+        word-wrap: break-word;
+        overflow: hidden;
+        .title {
+          overflow: hidden;
+        }
         span {
           margin-left: 10px;
+          position: absolute;
+          right: 5px;
+          top: 4px;
         }
       }
       .c-edit {
         cursor: pointer;
         opacity: 0;
-        font-size: 12px;
+        font-size: 16px;
+        position: absolute;
+        top: 25px;
+        right: 5px;
       }
     }
     .c-desc {

@@ -187,6 +187,8 @@ export default {
   /deep/ .text {
     font-weight: 600;
     font-size: 18px;
+    border: none;
+    padding: none;
   }
 }
 </style>
