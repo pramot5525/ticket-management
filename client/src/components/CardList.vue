@@ -1,30 +1,22 @@
 <template>
   <div class="card-list">
     <div class="status-title">{{ title }}</div>
-    <draggable
-      class="list-group"
-      tag="ul"
-      :value="value"
-      v-bind="options"
-      :move="onMove"
-      @input="(o) => $emit('input', o)"
-      @start="isDragging = true"
-      @end="isDragging = false"
-    >
-      <transition-group type="transition" :name="'flip-list'">
-        <Card
-          v-for="item in value"
-          :key="item.id"
-          :title="item.title"
-          @click.native="onClickCard(item.order)"
-        />
-      </transition-group>
-    </draggable>
+    <transition-group class="card-list" type="transition" :name="'flip-list'">
+      <Card
+        v-for="item in value"
+        :key="item.id"
+        :title="item.title"
+        :status="item.status"
+        :update-at="item.updatedAt"
+        :description="item.description"
+        @click.native="onClickCard(item)"
+      />
+    </transition-group>
+    <!-- </draggable> -->
   </div>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import Card from '@/components/Card'
 export default {
   name: 'CardList',
@@ -43,23 +35,11 @@ export default {
     },
   },
   components: {
-    draggable,
     Card,
   },
   methods: {
-    orderList() {
-      this.value = this.value.sort((one, two) => {
-        return one.order - two.order
-      })
-    },
-    onMove({ relatedContext, draggedContext }) {
-      const relatedElement = relatedContext.element
-      const draggedElement = draggedContext.element
-      return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-    },
-    onClickCard(id) {
-      console.log('onClickCard', id)
-      this.$emit('editCard', id)
+    onClickCard(data) {
+      this.$emit('editCard', data)
     },
   },
 }
@@ -67,9 +47,12 @@ export default {
 
 <style lang="scss" scoped>
 .card-list {
+  width: 100%;
   margin-bottom: 0.75rem;
   border-radius: 0.5rem;
   padding: 1rem;
   background: #dee2e6;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <b-modal
     ref="createModal"
-    title="Submit Your Name"
+    title="Create New"
     size="lg"
     @show="resetModal"
     @hidden="resetModal"
@@ -10,13 +10,18 @@
     <form ref="form" @submit.stop.prevent="handleSubmit">
       <b-form-group
         label="Title"
-        label-for="name-input"
+        label-for="title-input"
         class="mb-2"
-        invalid-feedback="Name is required"
+        invalid-feedback="Title is required"
+        :state="titleState"
       >
-        <!-- :state="nameState" -->
-
-        <b-form-input id="name-input" v-model="name" required></b-form-input>
+        <b-form-input
+          id="title-input"
+          v-model="form.title"
+          maxlength="255"
+          required
+          :state="titleState"
+        ></b-form-input>
       </b-form-group>
 
       <b-form-group
@@ -24,27 +29,53 @@
         label-for="decription-input"
         class="mb-2"
       >
-        <b-form-textarea id="decription-input" v-model="name"></b-form-textarea>
+        <b-form-textarea
+          id="decription-input"
+          v-model="form.decription"
+          placeholder="e.g. a sample value or a short description"
+        ></b-form-textarea>
       </b-form-group>
-      <b-form-group label="Contact infomation" label-for="name-input">
-        <b-form-input id="name-input" v-model="name"></b-form-input>
+      <b-form-group label="Contact infomation" label-for="contact-input">
+        <b-form-input
+          id="contact-input"
+          v-model="form.contact"
+          placeholder="e.g. 080-1234xxxx, 1234@email.com"
+          maxlength="255"
+        ></b-form-input>
       </b-form-group>
 
-      <b-form-group label="Status" label-for="name-input">
-        <b-form-select v-model="selected" :options="options"></b-form-select>
+      <b-form-group
+        label="Status"
+        label-for="status-input"
+        style="width: 200px"
+      >
+        <b-form-select
+          v-model="form.status"
+          :options="optionsStatus"
+          id="status-input"
+        ></b-form-select>
       </b-form-group>
     </form>
   </b-modal>
 </template>
 
 <script>
+import { optionsStatus } from '@/helper'
+
 export default {
   name: 'CreateCardModal',
   data() {
     return {
+      optionsStatus,
       name: '',
-      options: [{ value: 3, text: 'Hight' }],
       selected: null,
+      form: {
+        title: '',
+        description: '',
+        contact: '',
+        status: 'pending',
+      },
+      titleState: null,
     }
   },
   methods: {
@@ -53,10 +84,40 @@ export default {
     },
     hideModal() {
       this.$refs['createModal'].hide()
+      this.resetModal()
     },
-    resetModal() {},
-    handleSubmit() {},
-    handleOk() {},
+    checkFormValidity() {
+      const valid = this.$refs.form.checkValidity()
+      this.titleState = valid
+      return valid
+    },
+    resetModal() {
+      this.form = {
+        title: '',
+        description: '',
+        contact: '',
+        status: 'pending',
+      }
+      this.titleState = null
+    },
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
+    },
+    handleSubmit() {
+      if (!this.checkFormValidity()) {
+        return
+      }
+
+      this.$axios.post('/ticket/create', this.form).then((res) => {
+        if (res.data.status === 'ok') {
+          console.log(res)
+          this.hideModal()
+        }
+      })
+    },
   },
 }
 </script>

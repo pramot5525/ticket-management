@@ -27,11 +27,8 @@
       ></textarea>
       <input v-else ref="input" v-model="data" type="text" maxlength="255" />
       <div class="submit-edit">
-        <b-button variant="outline-secondary" @click="cancelEdit"
-          >Cancel</b-button
-        >
-
-        <b-button :is-loading="isLoading" @click="saveChanges">Save</b-button>
+        <i class="material-icons" @click="cancelEdit"> close </i>
+        <b-button variant="primary" @click="saveChanges">Save</b-button>
       </div>
     </div>
   </div>
@@ -56,7 +53,7 @@ export default {
     },
     placeholder: {
       type: String,
-      default: 'Just placeholder',
+      default: '',
     },
     disabled: {
       type: Boolean,
@@ -118,11 +115,8 @@ export default {
 
 <style lang="scss" scoped>
 .editable {
-  // padding: 12px 22px 12px 28px;
-
   &.active {
     cursor: pointer;
-    // background-color: #fef9ec;
   }
 
   &:hover {
@@ -158,10 +152,17 @@ export default {
   }
 }
 .submit-edit {
+  display: flex;
+  align-items: center;
+  i {
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 10px;
+  }
   /deep/ button {
     font-size: 12px;
     min-height: unset;
-    min-width: 65px;
+    // min-width: 65px;
     margin-right: 5px;
   }
 }
@@ -172,7 +173,6 @@ input {
   padding: 10px 8px;
   border-radius: 3px;
   border: solid 1px #6f6f6f;
-  // background-color: #ffffff;
   margin-bottom: 10px;
 
   outline: none;

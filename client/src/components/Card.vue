@@ -1,17 +1,21 @@
 <template>
-  <b-card class="card-kanban mb-2" style="max-width: 20rem">
+  <b-card class="card-kanban mb-2">
     <div>
       <div class="c-header">
-        <div class="c-title">{{ title }}</div>
-        <i class="material-icons c-edit">more_vert</i>
+        <div class="c-title">
+          {{ title }}
+          <b-badge pill :variant="badgeVariant">{{ status }}</b-badge>
+        </div>
+        <i class="material-icons c-edit">edit</i>
       </div>
-      <div class="c-desc">contact: {{ contactInfomation }}</div>
-      <div class="c-latest-date">Latest Date: {{ updateAt }}</div>
+      <div class="c-desc">{{ description }}</div>
+      <div class="c-latest-date">{{ formatDate(updateAt) }}</div>
     </div>
   </b-card>
 </template>
 
 <script>
+import { getBadgeVariant, formatDate } from '@/helper'
 export default {
   name: 'Card',
   props: {
@@ -25,20 +29,32 @@ export default {
     },
     description: {
       type: String,
-      default: 'just description',
+      default: '',
     },
     contactInfomation: {
       type: String,
-      default: '085-655698, admin@gmail.com',
+      default: '',
     },
     createAt: {
       type: String,
-      default: '01 Sep 2021 22:00',
+      default: '',
     },
     updateAt: {
       type: String,
-      default: '18 Aug 2021 15:15',
+      default: '',
     },
+    status: {
+      type: String,
+      default: 'pending',
+    },
+  },
+  computed: {
+    badgeVariant() {
+      return getBadgeVariant(this.status)
+    },
+  },
+  methods: {
+    formatDate,
   },
 }
 </script>
@@ -47,10 +63,13 @@ export default {
 .card-kanban {
   user-select: none;
   outline: none !important;
-  cursor: grab;
+  cursor: pointer;
   border-radius: 8px;
-  &:active {
-    cursor: grabbing;
+  flex: 1 0 21%;
+  margin: 4px;
+  flex: 0 1 calc(25% - 8px);
+  @media (max-width: 978px) {
+    flex: 0 1 calc(50% - 8px);
   }
 
   .card-body {
@@ -61,11 +80,33 @@ export default {
       display: flex;
       justify-content: space-between;
       font-weight: 600;
-
+      .c-title {
+        display: flex;
+        align-items: center;
+        text-transform: capitalize;
+        span {
+          margin-left: 10px;
+        }
+      }
       .c-edit {
         cursor: pointer;
         opacity: 0;
+        font-size: 12px;
       }
+    }
+    .c-desc {
+      font-size: 14px;
+      height: 44px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .c-latest-date {
+      color: rgb(152, 166, 173);
+      text-align: right;
+      font-size: 12px;
     }
   }
   &:hover .c-header .c-edit {
