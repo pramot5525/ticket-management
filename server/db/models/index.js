@@ -8,6 +8,7 @@ const config = require(`${__dirname}/../../config/database.json`)[env];
 const db = {};
 
 let sequelize;
+// run local use host: '127.0.0.1' >>> run docker-compose use host: 'database'
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {

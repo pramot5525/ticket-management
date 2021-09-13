@@ -60,6 +60,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { optionsStatus } from '@/helper'
 
 export default {
@@ -79,6 +80,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('ticket', ['addTicket']),
     showModal() {
       this.$refs['createModal'].show()
     },
@@ -113,8 +115,8 @@ export default {
 
       this.$axios.post('/ticket/create', this.form).then((res) => {
         if (res.data.status === 'ok') {
-          console.log(res)
           this.hideModal()
+          this.addTicket(res.data.results)
         }
       })
     },
