@@ -2,9 +2,11 @@ module.exports = {
   env: {
     es6: true,
     node: true,
+    jest: true,
+    'jest/globals': true,
   },
   extends: ['airbnb-base', 'prettier'],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'jest'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
