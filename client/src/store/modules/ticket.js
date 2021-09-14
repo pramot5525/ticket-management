@@ -17,7 +17,7 @@ const actions = {
   },
   addTicket({ commit }, ticket) {
     commit('ADD_TICKET', ticket)
-  }
+  },
 }
 
 const mutations = {
@@ -32,7 +32,7 @@ const mutations = {
   },
   ADD_TICKET(state, ticket) {
     state.tickets.unshift(ticket)
-  }
+  },
 }
 
 export default {
